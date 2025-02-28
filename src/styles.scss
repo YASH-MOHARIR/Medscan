@@ -1,0 +1,390 @@
+@use "./customComponents.scss";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Sen:wght@400..800&display=swap");
+
+html {
+  scroll-behavior: smooth;
+  body {
+    font-family: "Montserrat", sans-serif;
+    color: white;
+    box-sizing: border-box;
+    font-size: 1em;
+  }
+}
+
+//define night mode colors
+:root {
+  --bg-color: #000000;
+  --text-color: #ffffff;
+}
+
+.header {
+  background-image: url("/images/aurora-bg.png");
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  justify-content: space-evenly;
+  z-index: 1000;
+  top: 0;
+  width: 16vw;
+  height: 100vh;
+  padding: 1em;
+
+  .logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    .logo-icon {
+      filter: invert(1);
+      width: 2em;
+    }
+    .logo-text {
+      font-size: 2em;
+      display: inline;
+      font-weight: 200;
+      span {
+        font-weight: 600;
+      }
+    }
+  }
+
+  .about-patient {
+    padding: 10%;
+    border-radius: 10px;
+    border: 1px solid #ffffff;
+    .user {
+      display: flex;
+      margin: auto;
+      justify-content: center;
+      align-items: center;
+    }
+    p {
+      font-size: 1.2em;
+      // border-bottom: 0.5px solid #ffffff;
+    }
+  }
+  .navigation {
+    @extend .glassmorph;
+    margin-top: 5vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // padding: 1em;
+    color: white;
+    width: 90%;
+    font-size: 1.2em;
+
+    .nav-links {
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: column;
+      height: 100%;
+      padding: 0;
+      .nav-link {
+        color: white;
+        list-style: none;
+        a {
+          color: white;
+          text-decoration: none;
+          transition: all 0.5s ease;
+        }
+        a:hover {
+          color: #22d6ff;
+        }
+      }
+    }
+  }
+}
+
+.scan-barcode {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/images/aurora-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  .login-card {
+    min-height: 80%;
+    min-width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    .barcode-icon {
+      font-size: 10em;
+    }
+
+    .scan-form {
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    .scan-action-btns {
+      display: flex;
+      justify-content: space-evenly;
+      width: 100%;
+
+      .new-profile-btn {
+        color: white !important;
+        text-decoration: none;
+      }
+      button {
+        color: white !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+}
+
+// New Patient Form //
+.new-patient-form-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url("/images/aurora-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  // .basic-info-form{
+
+  // }
+
+  .action-step-btns {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+ 
+  }
+}
+
+// HOME
+.home {
+  // ABOUT  //
+  margin-left: 16vw;
+  padding: 0 5vw;
+  background-image: url("/images/aurora-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  #about {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    display: grid;
+    .about-main {
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 1em;
+
+      .general-info {
+        padding: 1em;
+      }
+    }
+
+    .todo-list-main {
+      color: rgb(255, 255, 255);
+      p {
+        font-size: 1.5em;
+      }
+
+      .add-todo-wrapper {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-grow: 1;
+        input {
+          padding: 0.5em;
+          width: 80%;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+        }
+        .add-btn {
+          padding: 0.5em;
+          background-color: #ffffff;
+          color: rgb(0, 0, 0);
+          border-radius: 5px;
+          border: none;
+        }
+      }
+      .todos-list {
+        ul {
+          margin-top: 10%;
+          margin-left: 0;
+          padding: 0;
+          .todo-item {
+            @extend .glassmorph;
+            list-style: none;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5em;
+            border-radius: 5px;
+            margin-top: 0.5em;
+            transition: all 0.5s ease;
+            p {
+              padding: 0;
+              height: 100%;
+              margin: 0;
+              padding-left: 0.5em;
+              border-left: 3px solid #22d6ff90;
+              border-radius: 2px;
+              transition: all 0.5s ease;
+
+              font-size: 100%;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .todo-completed {
+    p {
+      text-decoration: line-through;
+      color: grey;
+    }
+  }
+
+  // Appointments ///
+  #appointments {
+    .appointment-card {
+      .wrapper {
+        border-left: 5px solid #5be1ff7f;
+        padding-left: 10px;
+        border-radius: 5px;
+
+        .date-time {
+          display: flex;
+          align-items: center;
+          p {
+            margin: 0;
+            margin-left: 10px;
+            font-weight: 600;
+          }
+        }
+
+        .vitals {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          gap: 1em;
+          .vital {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .heart-icon {
+              color: rgb(255, 136, 136);
+            }
+            .thermometer-icon {
+              color: rgb(255, 255, 255);
+            }
+            p {
+              margin-left: 10%;
+            }
+          }
+        }
+
+        .prescriptions {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 1em;
+          .prescription {
+            background-color: rgba(211, 255, 145, 0.479);
+            color: rgb(40, 109, 0);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .prescription-details {
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Specimens //
+  #specimens {
+    min-height: 100vh;
+
+    .new-specimen-form-wrapper {
+      height: 50%;
+      .toggle-form-btn {
+        margin: 1em 0;
+        padding: 1em;
+        background-color: #333;
+        color: white;
+        border-radius: 5px;
+      }
+      .new-specimen-form {
+        .form-inputs {
+          div {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            label {
+              font-size: 1.5em;
+            }
+            input {
+              margin-top: 2em;
+            }
+          }
+        }
+
+        .add-btn {
+          margin-top: 2em;
+          padding: 1em;
+          background-color: #333;
+          color: white;
+          border-radius: 5px;
+        }
+      }
+    }
+    .specimens {
+      height: 100%;
+      .specimen-card {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        border-radius: 10px;
+        padding: 15px;
+        .specimen-icon {
+          height: 100%;
+          width: 30%;
+          color: white;
+          fill: white;
+
+          background-color: rgb(255, 175, 175);
+        }
+        .details {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          margin-left: 10px;
+        }
+      }
+      .blood-type {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        .blood-type-icon {
+          font-size: 2em;
+        }
+      }
+    }
+  }
+}
