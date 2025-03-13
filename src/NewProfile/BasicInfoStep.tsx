@@ -1,8 +1,8 @@
 import React, { ChangeEvent } from "react";
-import { PatientData } from "./types";
+import { PatientRecordType } from "../HomeSections/ProfileDataType";
 
 interface BasicInfoStepProps {
-  patientData: PatientData;
+  patientData: PatientRecordType;
   handleGeneralChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
   handleCommaSeparated: (e: ChangeEvent<HTMLInputElement>, field: string) => void;
   errors?: { [key: string]: string };
@@ -18,7 +18,7 @@ const BasicInfoStep: React.FC<BasicInfoStepProps> = ({
       <h4>Basic Information</h4>
       <div className="mb-3">
         <label>ID*</label>
-        <input type="text" className="form-control" name="id" value={patientData.id} disabled />
+        <input type="text" className="form-control" name="id" value={patientData.pid} disabled />
       </div>
       <div className="mb-3  ">
         <label>Name*</label>

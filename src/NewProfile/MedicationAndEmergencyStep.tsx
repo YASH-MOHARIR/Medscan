@@ -1,8 +1,9 @@
 import React, { ChangeEvent } from "react";
-import { PatientData } from "./Types";
+import { PatientRecordType } from "../HomeSections/ProfileDataType";
+
 
 interface MedicationAndEmergencyStepProps {
-  patientData: PatientData;
+  patientData: PatientRecordType ;
   handleGeneralChange: (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => void;
@@ -16,43 +17,24 @@ const MedicationAndEmergencyStep: React.FC<MedicationAndEmergencyStepProps> = ({
     <div>
       <h4>Medication History</h4>
       <div className="mb-3">
-        <label>Medication Name</label>
+        <label>Medication Name (Comma Seperated)</label>
         <input
           type="text"
           className="form-control"
-          name="medicationHistory.0.name"
-          value={patientData.medicationHistory[0]?.name || ""}
+          name="previousMedication"
+          value={patientData.previousMedication ||""}
           onChange={handleGeneralChange}
         />
       </div>
-      <div className="mb-3">
-        <label>Dosage</label>
-        <input
-          type="text"
-          className="form-control"
-          name="medicationHistory.0.dosage"
-          value={patientData.medicationHistory[0]?.dosage || ""}
-          onChange={handleGeneralChange}
-        />
-      </div>
-      <div className="mb-3">
-        <label>Frequency</label>
-        <input
-          type="text"
-          className="form-control"
-          name="medicationHistory.0.frequency"
-          value={patientData.medicationHistory[0]?.frequency || ""}
-          onChange={handleGeneralChange}
-        />
-      </div>
+ 
       <h4>Emergency Contacts</h4>
       <div className="mb-3">
         <label>Contact Name</label>
         <input
           type="text"
           className="form-control"
-          name="emergencyContacts.0.name"
-          value={patientData.emergencyContacts[0]?.name || ""}
+          name="emergencyContact.name"
+          value={patientData.emergencyContact.name || ""}
           onChange={handleGeneralChange}
         />
       </div>
@@ -61,18 +43,18 @@ const MedicationAndEmergencyStep: React.FC<MedicationAndEmergencyStepProps> = ({
         <input
           type="text"
           className="form-control"
-          name="emergencyContacts.0.relationship"
-          value={patientData.emergencyContacts[0]?.relationship || ""}
+          name="emergencyContact.relationship"
+          value={patientData.emergencyContact.relationship || ""}
           onChange={handleGeneralChange}
         />
       </div>
       <div className="mb-3">
         <label>Phone</label>
         <input
-          type="text"
+          type="number"
           className="form-control"
-          name="emergencyContacts.0.phone"
-          value={patientData.emergencyContacts[0]?.phone || ""}
+          name="emergencyContact.phone"
+          value={patientData.emergencyContact.phone || ""}
           onChange={handleGeneralChange}
         />
       </div>

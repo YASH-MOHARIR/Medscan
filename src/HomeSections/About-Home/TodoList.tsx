@@ -1,63 +1,98 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useCurrentPatientData } from "../../store/PatientDataContext";
+import { updatePatientRecord } from "../../../backend/api";
+import { Todo } from "../ProfileDataType";
 
-type TodoListItem = {
-  id: number;
-  text: string;
-  completed: boolean;
-  showDelete: boolean;
-};
+export const TodoList = ({todos}:{todos:Todo[]}) => {
+  const { patientData } = useCurrentPatientData();
+  const [newTodoText, setNewTodoText] = useState("");
+  const [localTodos, setLocalTodos] = useState<Todo[]>(todos || []);
+  const [isSaving, setIsSaving] = useState(false);
 
-export const TodoList = () => {
-  const [todos, settodos] = useState<TodoListItem[]>([]);
-
-  const sampleTodos: TodoListItem[] = [
-    { id: 1, text: "loss of appetite", completed: false, showDelete: false },
-    { id: 2, text: "Sore Throat from 2 days", completed: false, showDelete: false },
-    { id: 3, text: "Give Insulin Daily at 1200", completed: false, showDelete: false },
-  ];
-
-  useEffect(() => {
-    settodos(sampleTodos);
-  }, []);
-
-  const addTodo = (formData: FormData) => {
-    const todoText = formData.get("addTodoText");
-    settodos([...todos, { id: Date.now(), text: todoText as string, completed: false, showDelete: false }]);
+  // Debounce function to delay API calls
+  const debounce = (func: () => void, delay: number) => {
+    let timer: NodeJS.Timeout;
+    return () => {
+      clearTimeout(timer);
+      timer = setTimeout(func, delay);
+    };
   };
 
-  const strikeTodo = (id: number) => {
-    settodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          todo.completed = !todo.completed;
-        }
-        return todo;
-      })
+  // Save to DB after user inactivity
+  const saveTodosToDB = useCallback(
+    debounce(async () => {
+      setIsSaving(true);
+      try {
+        await updatePatientRecord({
+          patientId: patientData.pid,
+          updateType: "todo",
+          updateData: localTodos,
+        });
+      } catch (error) {
+        console.error("Error saving todos:", error);
+      } finally {
+        setIsSaving(false);
+      }
+    }, 5000), // 3s debounce delay
+    [localTodos]
+  );
+
+  // Watch for changes in localTodos and trigger batch update
+  useEffect(() => {
+    if (localTodos !== patientData.todos) {
+      saveTodosToDB();
+    }
+  }, [localTodos]);
+
+  const addTodo = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTodoText.trim()) return;
+
+    const newTodo: Todo = {
+      id: `todo_${Date.now()}`,
+      text: newTodoText,
+      completed: false,
+      priority: "Medium",
+    };
+
+    setLocalTodos((prev) => [...prev, newTodo]);
+    setNewTodoText(""); // Reset input
+  };
+
+  const toggleTodoCompletion = (id: string) => {
+    setLocalTodos((prev) =>
+      prev.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
     );
   };
 
-  const deleteTodo = (id: number) => {
-    settodos(todos.filter((todo) => todo.id !== id));
+  const deleteTodo = (id: string) => {
+    setLocalTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
 
   return (
     <div className="todo-list-main col-5">
-      <p>Todo List / Notes</p>
+      <p>Todo List / Notes <br />{isSaving && <span>Syncing Data...</span>}</p>
 
-      <form action={addTodo} className="add-todo-wrapper">
-        <input type="text" name="addTodoText" required placeholder="Add Item" />
-        <button type="submit" className="btn">
-          <i className="fi fi-br-add icon glass-green-btn  "></i>
-          {/* Add */}
+      <form onSubmit={addTodo} className="add-todo-wrapper mt-3">
+        <input
+          type="text"
+          name="addTodoText"
+          required
+          placeholder="Add Item"
+          value={newTodoText}
+          onChange={(e) => setNewTodoText(e.target.value)}
+        />
+        <button type="submit" className="icon glass-green-btn">
+          <i className="fi fi-br-add"></i>
         </button>
       </form>
 
       <div className="todos-list">
         <ul>
-          {todos.map((todo) => (
+          {localTodos.map((todo) => (
             <li className={`todo-item ${todo.completed ? "todo-completed" : ""}`} key={todo.id}>
-              <p onClick={() => strikeTodo(todo.id)}>{todo.text}</p>
-              <button className="  glass-red-btn" onClick={() => deleteTodo(todo.id)}>
+              <p onClick={() => toggleTodoCompletion(todo.id)}>{todo.text}</p>
+              <button className="glass-red-btn" onClick={() => deleteTodo(todo.id)}>
                 Delete
               </button>
             </li>

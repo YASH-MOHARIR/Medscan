@@ -1,8 +1,8 @@
 import React, { ChangeEvent } from "react";
-import { PatientData } from "./types";
+import { PatientRecordType } from "../HomeSections/ProfileDataType";
 
 interface ContactAndHistoryStepProps {
-  patientData: PatientData;
+  patientData: PatientRecordType;
   handleGeneralChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
   handleCommaSeparated: (e: ChangeEvent<HTMLInputElement>, field: string) => void;
 }
@@ -94,7 +94,7 @@ const ContactAndHistoryStep: React.FC<ContactAndHistoryStepProps> = ({
           <select
             className="form-select"
             name="detailedMedicalHistory.socialHistory.exercise"
-            value={patientData.detailedMedicalHistory.socialHistory.exercise}
+            value={patientData.detailedMedicalHistory.socialHistory.drugUse}
             onChange={handleGeneralChange}>
             <option value="Never">Never</option>
             <option value="Occasionally">Occasionally</option>

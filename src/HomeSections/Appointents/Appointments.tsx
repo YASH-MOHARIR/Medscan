@@ -1,54 +1,46 @@
-import { AppointmentCard } from "./AppointmentCard"
+import { useChatbot } from "../../store/ChatbotContext";
+import PatientLineChart from "./PatientDataGraph";
+import { AppointmentType } from "../ProfileDataType";
+import { AppointmentCard } from "./AppointmentCard";
+import AddAppointment from "./AddAppointment";
 
+export const Appointments = ({ appointmentData }: { appointmentData: AppointmentType[] }) => {
+  const { sendCustomPrompt } = useChatbot();
 
-const sampleAppointmentsData = [
-  {
-    date: "2022-01-01",
-    time: "10:00 AM",
-    doctor: "Dr. Smith",
-    speciality: "Cardiology",
-    vitals: {
-      heartRate: 80,
-      temperature: 98.6,
-      bloodPressure: "120/80",
-    },
-    prescriptions: [
-      {
-        medcineName: "Aspirin",
-        dosage: "100mg",
-      },
-      {
-        medcineName: "Lisinopril",
-        dosage: "10mg"
-      },
-    ],
-  },
-  {
-    date: "2022-01-02",
-    time: "2:30 PM",
-    doctor: "Dr. Johnson",
-    speciality: "Dermatology",
-    vitals: {
-      heartRate: 75,
-      temperature: 98.2,
-      bloodPressure: "110/70",
-    },
-    prescriptions: [
-      {
-        medcineName: "Hydrocortisone",
-        dosage: "1%", 
-      },
-    ],
-  },
-];
+  const analyzeAppointments = async () => {
+    const response = sendCustomPrompt(
+      "Analyze the patient appointments Info and vital data of this patient in 100 words, give suggestions on trends and give predictions in short" +
+        JSON.stringify(appointmentData),
+      "Analyzing Past Appointments and Vitals... "
+    );
+    console.log(response);
+  };
 
-export const Appointments = () => {
   return (
     <>
-    <h1>Appointments</h1>
-      {sampleAppointmentsData.map((appointment, index) => (
-        <AppointmentCard key={index} appointmentData={appointment} />
-      ))}
+      <div className="d-flex  ">
+        <h1>Appointments</h1>
+        <button onClick={analyzeAppointments} className="analyze-btn mx-3">
+          <img className="analyze-icon" src="/icons/chat-gpt-analyze.png" alt="" /> Analyze
+        </button>
+        <AddAppointment />
+      </div>
+
+      <div className="appointments-wrapper">
+        {appointmentData.map((appointment, index) => (
+          <AppointmentCard key={index} appointmentData={appointment} />
+        ))}
+      </div>
+      
+      <div className="my-5">
+        <div className="d-flex align-items-center my-3 ">
+          <h4>Vitals Chart</h4>
+          <button onClick={analyzeAppointments} className="analyze-btn mx-3">
+            <img className="analyze-icon" src="/icons/chat-gpt-analyze.png" alt="" /> Analyze Vitals
+          </button>
+        </div>
+        <PatientLineChart appointmentsData={appointmentData} />
+      </div>
     </>
   );
-}
+};

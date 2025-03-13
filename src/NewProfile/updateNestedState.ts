@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const updateNestedState = (state: any, path: string, value: any) => {
     const keys = path.split(".");
     const lastKey = keys.pop();

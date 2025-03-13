@@ -1,7 +1,18 @@
-const Header = () => {
+import { useNavigate } from "react-router";
+import { basicData } from "./HomeSections/ProfileDataType";
+import { useCurrentPatientData } from "./store/PatientDataContext";
+
+const Header = ({ name, pid, gender, age }: basicData) => {
+  const navigateTo = useNavigate();
+  const { logout } = useCurrentPatientData();
+
+  const onLogout = () => {
+    logout();
+    navigateTo("/");
+  };
+
   return (
     <div className="header">
-      
       <div className="logo">
         <img src="/images/logo.png" className="logo-icon " alt="" />
         <p className="logo-text">
@@ -11,12 +22,12 @@ const Header = () => {
       </div>
 
       <div className="about-patient">
-        <img className="icon user mb-3" src="/icons/user.svg" alt="user" />
-        <h5 className="patient-name">Yash Manish Moharir</h5>
+        <i className="fi fi-rr-user icon user mb-3"></i>
+        <h5 className="patient-name">{name}</h5>
         <hr />
-        <p className="patient-id">P.ID : 123456</p>
-        <p className="gender"> Male</p>
-        <p className="age"> 25</p>
+        <p className="patient-id">P.ID : {pid}</p>
+        <p className="gender"> {gender}</p>
+        <p className="age"> {age}</p>
       </div>
 
       <nav className="navigation" id="navigation">
@@ -34,7 +45,9 @@ const Header = () => {
       </nav>
       <hr />
 
-      <button className="  glassmorph glass-red-btn">LOGOUT</button>
+      <button onClick={onLogout} className="  glassmorph glass-red-btn">
+        LOGOUT
+      </button>
     </div>
   );
 };

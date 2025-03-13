@@ -1,15 +1,16 @@
-export type prescriptionProps = {
-  medcineName: string;
-  dosage: string;
-};
+import { Prescription } from "../ProfileDataType";
 
-export const PrescriptionCard = ({ prescriptionData }: { prescriptionData: prescriptionProps }) => {
+
+
+export const PrescriptionCard = ({ prescriptionData }: { prescriptionData: Prescription }) => {
   return (
     <div className="prescription glassmorph">
-      <img src="/icons/medicine-bottle.svg" className="icon" alt="" />
+      <i className="icon fi fi-rr-prescription-bottle-alt "></i>
       <div className="prescription-details">
-        <h6> {prescriptionData.medcineName}</h6>
-        <p>{prescriptionData.dosage}</p>
+        <h6> {prescriptionData.medicine} - {prescriptionData.dosage}</h6>
+        <hr />
+        <p>{prescriptionData.frequency}</p>
+        <p>{prescriptionData.instructions}</p>
       </div>
     </div>
   );
